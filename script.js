@@ -1,6 +1,8 @@
  // Import the functions you need from the SDKs you need
+ const name = prompt("Enter your name");
+
  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
- import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+ import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
  // Your web app's Firebase configuration
  const firebaseConfig = {
@@ -19,13 +21,6 @@
  const db = getDatabase(app);
  console.log(db);
 
- function writeUserData(userID, name, email, date){
-
-    set(ref(db, 'users/' + userID),{
-        clicked:'yes',
-        time: `${date}`
-    })
- }
 
  console.log(db);
 
@@ -122,18 +117,41 @@ noBtn.addEventListener("click", ()=>{
 })
 const yesBtn = document.getElementsByClassName("yes-btn")[0];
 
-var uId = 0;
+// var uId = 0;
+// function writeUserData(userID, name, status, email, date){
 
-yesBtn.addEventListener('click', function (e){
-    const date = new Date();
-    writeUserData(1, "Swatej", "s@gmail.com", date);
-})
-// function dbwrite(){
-//     var date = new Date();
-//     set(ref(db, 'user/' + uId),{
-//         clicked:1,
-//         date: date
+//     set(ref(db, 'users/' + userID),{
+//         Clicked:'yes',
+//         time: `${date}`
 //     })
 // }
 
+// yesBtn.addEventListener('click', function (e){
+//     uId++;
+//     const date = new Date();
+//     writeUserData(uId, "Swatej", 'Yes', "s@gmail.com", date);
+// })
 
+var uId = 0;
+
+function writeGirlDescision(status, date) {
+  // Use push method instead of set
+  push(ref(db, 'users/' + name), {
+    date: `${date}`,
+    Clicked: status,
+  });
+}
+
+yesBtn.addEventListener('click', function (e) {
+  let date = new Date();
+  writeGirlDescision('Yes', date);
+});
+
+noBtn.addEventListener('mouseover', function (e) {
+  let date = new Date();
+  writeGirlDescision('No', date);
+});
+noBtn.addEventListener('click', function (e) {
+  let date = new Date();
+  writeGirlDescision('No', date);
+});
